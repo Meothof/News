@@ -32,4 +32,8 @@ export class NewsFeedComponent implements OnInit {
     event?.target.complete();
   }
 
+  public async viewArticle(article: INewsApiArticle) {
+    window.open(article.url);
+  }
+
 }

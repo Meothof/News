@@ -8,7 +8,7 @@
   <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-card *ngFor="let article of headlines$ | async">
+  <ion-card *ngFor="let article of headlines$ | async" (click)="viewArticle(article)">
     <img loading="lazy" [src]="article.urlToImage"/>
     <ion-card-header>
       <ion-card-subtitle>{{article.description}}</ion-card-subtitle>
