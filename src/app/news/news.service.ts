@@ -13,9 +13,10 @@ export class NewsService {
      this.newsApi = new NewsAPI('14c9987f9fa94cb9851c2382c5a29f2e');
   }
 
-  public async fetchHeadlines(): Promise<INewsApiResponse> {
+  public async fetchHeadlines(page = 1): Promise<INewsApiResponse> {
     return this.newsApi.getTopHeadlines({
       country: 'ca',
+      page,
     });
   }
 }

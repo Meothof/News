@@ -9,7 +9,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-card *ngFor="let article of headlines$ | async" (click)="viewArticle(article)">
-    <img loading="lazy" [src]="article.urlToImage"/>
+    <ion-img [src]="article.urlToImage"></ion-img>
     <ion-card-header>
       <ion-card-subtitle>{{article.description}}</ion-card-subtitle>
       <ion-card-title>{{article.title}}</ion-card-title>
@@ -18,4 +18,10 @@
       {{article.content}}
     </ion-card-content>
   </ion-card>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="circular"
+      loadingText="Loading more article...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
