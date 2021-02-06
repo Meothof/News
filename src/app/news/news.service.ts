@@ -1,22 +1,17 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import NewsAPI from 'ts-newsapi';
-import { INewsApiResponse } from 'ts-newsapi/lib/types';
+import { IArticle } from '../interfaces/article';
+import { key } from '../keys/gnews';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class NewsService {
 
-  private readonly newsApi: NewsAPI;
+  constructor(private httpClient: HttpClient) {}
 
-  constructor() {
-     this.newsApi = new NewsAPI('14c9987f9fa94cb9851c2382c5a29f2e');
-  }
-
-  public async fetchHeadlines(page = 1): Promise<INewsApiResponse> {
-    return this.newsApi.getTopHeadlines({
-      country: 'ca',
-      page,
-    });
+  public async fetchHeadlines(page = 1): Promise<IArticle[]> {
+    const headlines = await this.httpClient.get<{articles: IArticle[]}>(
+      `https://gnews.io/api/v4/top-headlines?&country=ca&lang=fr&page=${page}&token=${key}`
+    ).toPromise();
+    return headlines.articles;
   }
 }

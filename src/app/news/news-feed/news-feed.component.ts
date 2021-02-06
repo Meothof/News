@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { INewsApiArticle } from 'ts-newsapi/lib/types';
+import { IArticle } from 'src/app/interfaces/article';
 import { NewsService } from '../news.service';
 
 interface RefreshEvent {
@@ -23,7 +23,7 @@ interface LoaderEvent {
 })
 export class NewsFeedComponent implements OnInit {
 
-  public readonly headlines$: BehaviorSubject<Array<INewsApiArticle>>;
+  public readonly headlines$: BehaviorSubject<Array<IArticle>>;
   private pageLoaded: number;
 
   constructor(private newsService: NewsService) {
@@ -35,19 +35,19 @@ export class NewsFeedComponent implements OnInit {
     this.refresh();
   }
 
-  public async refresh(event?: RefreshEvent) {
+  public async refresh(event?: any) {
     this.pageLoaded = 1;
-    const headlines = (await this.newsService.fetchHeadlines()).articles;
+    const headlines = (await this.newsService.fetchHeadlines());
     this.headlines$.next(headlines);
     event?.target.complete();
   }
 
-  public async viewArticle(article: INewsApiArticle) {
+  public async viewArticle(article: IArticle) {
     window.open(article.url);
   }
 
-  public async loadMore(event: LoaderEvent) {
-    const newArticles = (await this.newsService.fetchHeadlines(this.pageLoaded + 1)).articles;
+  public async loadMore(event: any) {
+    const newArticles = (await this.newsService.fetchHeadlines(this.pageLoaded + 1));
     if (newArticles.length > 0) {
       this.pageLoaded++;
       this.headlines$.next(this.headlines$.value.concat(newArticles));

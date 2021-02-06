@@ -1,4 +1,4 @@
-# Specifies intentionally untracked files to ignore when using Git
+fire# Specifies intentionally untracked files to ignore when using Git
 # http://git-scm.com/docs/gitignore
 
 *~
@@ -30,3 +30,9 @@ npm-debug.log*
 /plugins
 /www
 src/app/keys/news-api.ts
+src/app/keys/gnews.ts
+.firebaserc
+firebase.json
+.firebase/hosting.d3d3.cache
+.github/workflows/firebase-hosting-merge.yml
+.github/workflows/firebase-hosting-pull-request.yml
