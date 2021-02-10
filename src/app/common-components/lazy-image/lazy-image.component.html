@@ -1,0 +1,11 @@
+<ion-img
+  [class.hidden]="!loaded"
+  [src]="source"
+  (ionImgDidLoad)="loaded = true"
+></ion-img>
+
+<ion-skeleton-text
+  *ngIf="!loaded"
+  animated
+  style="width: 100%; height: 5em"
+></ion-skeleton-text>
