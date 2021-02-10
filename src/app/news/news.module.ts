@@ -5,6 +5,7 @@ import { NewsRoutingModule } from './news-routing.module';
 import { IonicModule } from '@ionic/angular';
 import { HttpClientModule } from '@angular/common/http';
 import { NewsService } from './news.service';
+import { SettingsModule } from '../settings/settings.module';
 
 @NgModule({
   declarations: [NewsFeedComponent],
@@ -13,6 +14,7 @@ import { NewsService } from './news.service';
     NewsRoutingModule,
     IonicModule,
     HttpClientModule,
+    SettingsModule,
   ],
   providers: [NewsService],
 })
