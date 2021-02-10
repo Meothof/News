@@ -1,12 +1,12 @@
 export interface IArticle {
-    content: string;
+    id: string;
+    title: string;
     description: string;
-    image: string;
-    publishedAt: string;
+    link: string;
+    pubDate: string;
     source: {
         name: string;
-        url: string;
+        link: string;
     };
-    title: string;
-    url: string;
+    image: string;
 }

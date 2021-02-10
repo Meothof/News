@@ -5,23 +5,65 @@
 </ion-header>
 
 <ion-content fullscreen>
-  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+  <ion-refresher
+    slot="fixed"
+    (ionRefresh)="refresh($event)"
+  >
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-card *ngFor="let article of headlines$ | async" (click)="viewArticle(article)">
-    <ion-img [src]="article.image"></ion-img>
-    <ion-card-header>
-      <ion-card-subtitle>{{article.description}}</ion-card-subtitle>
-      <ion-card-title>{{article.title}}</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      {{article.content}}
-    </ion-card-content>
-  </ion-card>
-  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
-    <ion-infinite-scroll-content
-      loadingSpinner="circular"
-      loadingText="Loading more article...">
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+  <ng-container *ngIf="headlines$ | async as headlines; else skeletonArticles">
+    <ion-card
+      *ngFor="let article of headlines; trackBy: trackArticleById"
+      (click)="viewArticle(article)"
+    >
+      <app-lazy-image
+        *ngIf="article.image as imageSource"
+        [source]="imageSource"
+      ></app-lazy-image>
+      <!--       <ion-img [src]="article.image"></ion-img>
+ -->
+      <ion-card-header>
+        <ion-card-title>{{article.title}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        {{article.description}}
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
 </ion-content>
+
+
+<ng-template #skeletonArticles>
+  <ion-list>
+    <ion-card *ngFor="let item of [1, 2, 3, 4, 5]">
+      <p>
+        <ion-skeleton-text
+          animated
+          style="width: 100%; height: 5em"
+          slot="start"
+        ></ion-skeleton-text>
+      </p>
+      <ion-card-header>
+        <ion-card-title>
+          <p>
+            <ion-skeleton-text
+              animated
+              style="width: 90%; height: 1em;"
+              slot="start"
+            ></ion-skeleton-text>
+          </p>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>
+          <ion-skeleton-text
+            animated
+            style="width: 90%; height: 3em"
+            slot="start"
+          ></ion-skeleton-text>
+        </p>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+</ng-template>

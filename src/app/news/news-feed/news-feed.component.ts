@@ -23,12 +23,10 @@ interface LoaderEvent {
 })
 export class NewsFeedComponent implements OnInit {
 
-  public readonly headlines$: BehaviorSubject<Array<IArticle>>;
-  private pageLoaded: number;
+  public readonly headlines$: Subject<Array<IArticle>>;
 
   constructor(private newsService: NewsService) {
-    this.headlines$ = new BehaviorSubject([]);
-    this.pageLoaded = 0;
+    this.headlines$ = new Subject();
   }
 
   ngOnInit() {
@@ -36,25 +34,16 @@ export class NewsFeedComponent implements OnInit {
   }
 
   public async refresh(event?: any) {
-    this.pageLoaded = 1;
     const headlines = (await this.newsService.fetchHeadlines());
     this.headlines$.next(headlines);
     event?.target.complete();
   }
 
   public async viewArticle(article: IArticle) {
-    window.open(article.url);
+    window.open(article.link);
   }
 
-  public async loadMore(event: any) {
-    const newArticles = (await this.newsService.fetchHeadlines(this.pageLoaded + 1));
-    if (newArticles.length > 0) {
-      this.pageLoaded++;
-      this.headlines$.next(this.headlines$.value.concat(newArticles));
-      event.target.complete();
-    } else { // No more articles to load
-      event.target.disabled = true;
-    }
+  public trackArticleById(_: number, article: IArticle): string {
+    return article.id;
   }
-
 }

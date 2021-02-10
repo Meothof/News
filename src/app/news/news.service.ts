@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IArticle } from '../interfaces/article';
-import { key } from '../keys/gnews';
 import { SettingsService } from '../settings/settings.service';
+
+const API_ENDPOINT = 'http://localhost:8080';
 
 @Injectable()
 export class NewsService {
@@ -12,14 +13,11 @@ export class NewsService {
     private settingsService: SettingsService,
   ) { }
 
-  public async fetchHeadlines(page = 1): Promise<IArticle[]> {
-    const headlines = await this.httpClient.get<{ articles: IArticle[] }>(
-      `https://gnews.io/api/v4/top-headlines?
-      country=${this.settingsService.getCountry()}&
-      lang=${this.settingsService.getLanguage()}&
-      page=${page}&
-      token=${key}`
+  public async fetchHeadlines(): Promise<IArticle[]> {
+    const headlines = await this.httpClient.get<IArticle[]>(
+      `${API_ENDPOINT}/headlines?country=${this.settingsService.getCountry()}&lang=${this.settingsService.getLanguage()}`,
     ).toPromise();
-    return headlines.articles;
+
+    return headlines;
   }
 }
